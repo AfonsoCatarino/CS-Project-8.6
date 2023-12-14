@@ -2,7 +2,6 @@
 # coding: utf-8
 
 # In[19]:
-python -m pip install --upgrade pip
 pip install matplotlib
 
 import streamlit as st
