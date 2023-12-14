@@ -505,23 +505,18 @@ def get_headers_placeholder():
         "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
     }
 def main_menu(footprint_manager):
-    st.title("Carbon Footprint Tracker")
+    st.sidebar.title("Carbon Footprint Tracker")
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
+
     choice = st.sidebar.selectbox("Select Option", options)
-    if 'initialized' not in st.session_state:
-        initialize_sectors(footprint_manager)
-        st.session_state['initialized'] = True
+
     if choice == "Add/Update Values":
+        st.title("Add/Update Values")
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
-        sector_options = list(footprint_manager.sectors.keys())
-        if not sector_options:
-            st.error("No sectors available to select. Please check the initialization of sectors.")
-            return
-        if 'selected_sector' not in st.session_state or st.session_state['selected_sector'] not in sector_options:
-            st.session_state['selected_sector'] = sector_options[0]
-        st.session_state['selected_sector'] = st.selectbox("Choose Sector", sector_options, index=sector_options.index(st.session_state['selected_sector']))
-        if st.session_state['selected_sector']:
-            footprint_manager.input_value(st.session_state['selected_sector'], year)
+        sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
+        st.session_state.selected_sector = sector
+        for use_case in footprint_manager.sectors.get(sector, {}):
+            footprint_manager.input_value(sector, use_case, year)
     elif choice == "Display Emissions":
         selected_year = st.selectbox("Choose Year", list(range(2010, 2050)))
         total_emissions = footprint_manager.total_emissions_by_year(selected_year)
