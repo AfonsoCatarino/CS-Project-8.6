@@ -42,7 +42,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -70,7 +70,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -96,7 +96,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -124,7 +124,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -153,7 +153,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -181,7 +181,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -211,7 +211,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -237,7 +237,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -263,7 +263,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -289,7 +289,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -319,7 +319,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -345,7 +345,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -371,7 +371,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -401,7 +401,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -430,7 +430,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
@@ -460,7 +460,7 @@ class Footprint:
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
 
-                     except ET.ParseError as e:
+                    except ET.ParseError as e:
                             st.error(f"XML parse error: {e}")
                     except ValueError as e:
                             st.error(f"Value error: Could not convert {amount_text} to float. {e}")
