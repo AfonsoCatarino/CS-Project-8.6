@@ -27,7 +27,7 @@ class Footprint:
                 preading = st.number_input("What was the last reading on the electricity counter (Kwh/year):", key=preading_key)
                 url = f"https://api.carbonkit.net/3.6/categories/electricity/calculation?country=Switzerland&values.currentReading={creading}&values.lastReading={preading}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -53,9 +53,9 @@ class Footprint:
                 fuelvolume_key = f"{sector}_{use_case}_{year}_fuelvolume"
                 fueltype = st.selectbox("Select an option for Fuel Combustion", ["Diesel", "Petrol", "Gas oil", "Natural Gas", "Coal (industrial)", "Burning Oil"], key=fueltype_key)
                 fuelvolume = st.number_input("What volume of it have you used (net):", key=fuelvolume_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Fuel_Defra/calculation?fuel={fueltype}&netOrgross=net&unit=volume&values.volume={fuelvolume}"
+                url = f"https://api.carbonkit.net/3.6/categories/Fuel_Defra/calculation?fuel={fueltype}&netOrGross=net&unit=volume&values.volume={fuelvolume}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -81,7 +81,7 @@ class Footprint:
                 watervol = st.number_input("How much water was used (in liters):", key=watervol_key)
                 url = f"https://api.carbonkit.net/3.6/categories/water/calculation?type=cold&values.volume{watervol}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -137,7 +137,7 @@ class Footprint:
                 lgvfdist = st.number_input("What is the distance freighted:", key=lgvfdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_large_goods_vehicle_transport/calculation?size={lgvftype}&values.distance{lgvfdist}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -166,7 +166,7 @@ class Footprint:
                 traindist = st.number_input("What distance was traveled by train (km):", key=traindist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_train_transport/calculation?type={traintyp}&values.distance={traindist}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -196,7 +196,7 @@ class Footprint:
                 shipmass = st.number_input("What is the mass of the load freighted (in tonnes):", key=shipmass_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Ship_Freight_Defra/calculation?type={shiptype}&values.distance{shipdistance}&values.mass={shipmass}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -222,7 +222,7 @@ class Footprint:
                 busdist = st.number_input("What distance was traveled by bus (km):", key=busdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_bus_transport/calculation?type=typical&values.distance={busdist}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -248,7 +248,7 @@ class Footprint:
                 shipdist = st.number_input("What distance was traveled by ship (km):", key=shipdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_ship_transport/calculation?type=ferry&values.distance={shipdist}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -274,7 +274,7 @@ class Footprint:
                 planedist = st.number_input("What distance was traveled by plane (km):", key=planedist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_plane_transport/calculation?type=domestic&size=return&values.distance={planedist}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -304,7 +304,7 @@ class Footprint:
                 cardistance = st.number_input("What distance did you travel by car", key=cardistance_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_car_transport/calculation?fuel={carfueltype}&size={carsize}&values.distance={cardistance}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -330,7 +330,7 @@ class Footprint:
                 taxdist = st.number_input("What distance was traveled by taxi", key=taxdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_taxi_transport/calculation?values.distance={taxdist}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -356,7 +356,7 @@ class Footprint:
                 metrec = st.number_input("Volume of Methane Recovered (m3)", key=metrec_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Landfill_emissions_based_on_methane_recovery/calculation?values.collected{metrec}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -386,7 +386,7 @@ class Footprint:
                 qttreatment = st.number_input("How much waste was treated (in Gg):", key=qttreatment_key)
                 url = f"https://api.carbonkit.net/3.6/categories/biological_waste_treatment/calculation?type={btype}&values.recoveredMethane={qtmethane}&values.mass={qttreatment}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -414,7 +414,7 @@ class Footprint:
                 qtburned = st.number_input("What quantity was burned (in tonnes)", key=qtburned_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Industrial_waste_combustion/calculation?industry={ind}&values.mass={qtburned}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
@@ -445,7 +445,7 @@ class Footprint:
                 lsize = st.number_input("How many do you own:", key=lsize_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Enteric_fermentation/livestockType={ltype}&region={region}&values.livestockNumber={lsize}"
                 headers = {
-                    "Accept": "application/json",
+                    "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
                 response = requests.get(url, headers=headers)
