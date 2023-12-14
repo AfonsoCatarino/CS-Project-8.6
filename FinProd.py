@@ -456,7 +456,7 @@ def plot_forest(forest):
     ax.axis('off')
     st.pyplot(fig)
             
-def initialize_sectors(footprint_manager, selected_sector):
+def initialize_sectors(footprint_manager):
         sectors_data = {
             "Energy": ["Electricity", "Fuel Combustion"],
             "Production and Manufacturing": ["Production Processes"],
@@ -466,9 +466,8 @@ def initialize_sectors(footprint_manager, selected_sector):
             "Agriculture": ["Livestock", "Farming"],
         }
 
-        if selected_sector in sectors_data:
-            use_cases = sectors_data[selected_sector]
-            footprint_manager.emission_sector(selected_sector, use_cases)
+        for sector, use_cases in sectors_data.items():
+            footprint_manager.emission_sector(sector, use_cases)
     
     footprint_manager.emission_benchmark("Energy", "Electricity", 12.1)
     footprint_manager.emission_benchmark("Energy", "Fuel Combustion", 42)
@@ -499,17 +498,26 @@ def get_headers_placeholder():
     }
 def main_menu(footprint_manager):
     st.title("Carbon Footprint Tracker")
-    sector_options = list(footprint_manager.sectors.keys()) if footprint_manager.sectors else []
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
     choice = st.sidebar.selectbox("Select Option", options)
+
+    # Initialize sectors if not done yet
+    if 'initialized' not in st.session_state:
+        initialize_sectors(footprint_manager)
+        st.session_state['initialized'] = True
+
     if choice == "Add/Update Values":
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
+        sector_options = list(footprint_manager.sectors.keys())
+
         if sector_options:
             sector = st.selectbox("Choose Sector", sector_options)
+            # Only call input_value for the selected sector
             if sector:
-                footprint_manager.input_value(sector, year)
+                for use_case in footprint_manager.sectors[sector]:
+                    footprint_manager.input_value(sector, use_case, year)
         else:
-            st.write("No sectors available to select.")
+            st.error("No sectors available to select. Please check the initialization of sectors.")
     elif choice == "Display Emissions":
         selected_year = st.selectbox("Choose Year", list(range(2010, 2050)))
         total_emissions = footprint_manager.total_emissions_by_year(selected_year)
