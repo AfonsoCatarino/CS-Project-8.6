@@ -476,24 +476,37 @@ def main_menu(footprint_manager):
     st.title("Carbon Footprint Tracker")
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
 
+    # Check if the selected sector is set
+    if not st.session_state.get("selected_sector"):
+        initialize_sectors(footprint_manager)
+
     choice = st.sidebar.selectbox("Select Option", options)
 
     if choice == "Add/Update Values":
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
         sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
         st.session_state.selected_sector = sector
-        for use_case in footprint_manager.sectors.get(sector, {}):
-            footprint_manager.input_value(sector, use_case, year)
+
+        # Check if the selected sector is the desired one before displaying items
+        if st.session_state.selected_sector == sector:
+            for use_case in footprint_manager.sectors.get(sector, {}):
+                footprint_manager.input_value(sector, use_case, year)
 
     elif choice == "Display Emissions":
         selected_year = st.selectbox("Choose Year", list(range(2010, 2050)))
         total_emissions = footprint_manager.total_emissions_by_year(selected_year)
         st.subheader(f"Total Emissions for {selected_year}: {total_emissions} tCO2eq")
+
+        # Check if the selected sector is the desired one before displaying values
         sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
-        footprint_manager.display_values(sector, selected_year)
+        if st.session_state.selected_sector == sector:
+            footprint_manager.display_values(sector, selected_year)
 
     elif choice == "Plot Total Emissions":
-        plot_total_emissions(footprint_manager)
+        # Check if the selected sector is the desired one before plotting
+        sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
+        if st.session_state.selected_sector == sector:
+            plot_total_emissions(footprint_manager)
 
 if __name__ == "__main__":
     footprint_manager = Footprint()
