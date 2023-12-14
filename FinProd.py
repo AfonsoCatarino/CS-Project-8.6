@@ -380,25 +380,24 @@ class Footprint:
                 ltype = st.selectbox("What type of livestock do you own", ["Dairy cattle", "Other Cattle", "Buffalo", "sheep", "Goats", "Camels", "Horses", "Mules/Asses", "Deer", "Alpacas", "Swine"], key=ltype_key)
                 region = st.selectbox("What region is it from (Specify region for cattle and developed country for others)", ["North America", "Eastern Europe", "Western Europe", "Oceania", "Latin America", "Asia", "Africa and Middle East", "Indian Subcontinent", "Developed Countries", "Developing Countries"], key=region_key)
                 lsize = st.number_input("How many do you own:", key=lsize_key)
-                    url = f"https://api.carbonkit.net/3.6/categories/Enteric_fermentation/livestockType={ltype}&region={region}&values.livestockNumber={lsize}"
-                    headers = {
-                        "Accept": "application/json",
-                        "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                    }
-                    response = requests.get(url, headers=headers)
-                    if response.status_code == 200:
-                        try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                        except (json.JSONDecodeError, ValueError):
+                url = f"https://api.carbonkit.net/3.6/categories/Enteric_fermentation/livestockType={ltype}&region={region}&values.livestockNumber={lsize}"
+                headers = {
+                    "Accept": "application/json",
+                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
+                }
+                response = requests.get(url, headers=headers)
+                if response.status_code == 200:
+                    try:
+                        data = response.json()
+                        output = data.get("output", [])
+                        if output and isinstance(output, list) and len(output) > 0:
+                            total_direct_co2e = float(output[0].get("value", 0))
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
+                            self.value[sector][use_case][year] = total_direct_co2e
+                    except (json.JSONDecodeError, ValueError):
                             print("Error decoding JSON or extracting value.")
-                    else:
-                        return 0
+                 else:
+                     return 0
             else:
                 value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}", value=None, key=f"{sector}_{use_case}_{year}")
                 st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
