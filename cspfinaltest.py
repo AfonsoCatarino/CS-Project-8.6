@@ -48,7 +48,7 @@ class Footprint:
                         self.value[sector][use_case][year] = value
                     else:
                         st.error('Amount element not found in the XML response.')
-                            amount_value = 0
+                        amount_value = 0
                     except ET.ParseError as e:
                         st.error(f"XML parse error: {e}")
                     except ValueError as e:
