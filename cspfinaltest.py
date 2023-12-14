@@ -1,6 +1,9 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+import base64
+import requests
+import xml.etree.ElementTree as ET
 
 class Footprint:
     def __init__(self):
