@@ -40,6 +40,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -67,6 +71,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -92,6 +100,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -120,6 +132,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -147,6 +163,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -174,6 +194,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -203,6 +227,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -228,6 +256,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -253,6 +285,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -278,6 +314,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -307,6 +347,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -332,6 +376,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -357,6 +405,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -386,6 +438,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -413,6 +469,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
@@ -442,6 +502,10 @@ class Footprint:
                                 value=amount_value,
                                 key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
+                            self.value[sector][use_case][year] = value
+                        else:
+                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
                     except ET.ParseError:
                         st.error(f"Error parsing XML from response: {response.content}")
