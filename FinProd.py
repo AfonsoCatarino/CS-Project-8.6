@@ -33,22 +33,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Fuel Combustion":
@@ -64,22 +57,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Water":
@@ -93,25 +79,17 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
-                
             elif use_case == "Train Freighting":
                 traindistance_key = f"{sector}_{use_case}_{year}_traindistance"
                 trainloadmass_key = f"{sector}_{use_case}_{year}_trainloadmass"
@@ -125,22 +103,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Large Goods Vehicle Freighting":
@@ -156,22 +127,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Train":
@@ -187,22 +151,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Ship Freighting":
@@ -220,22 +177,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Bus":
@@ -249,22 +199,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Ship":
@@ -278,22 +221,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Plane":
@@ -307,22 +243,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Car":
@@ -340,22 +269,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Taxi":
@@ -369,22 +291,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Landfill":
@@ -398,22 +313,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Biological Waste Treatment":
@@ -431,22 +339,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Industrial Waste Combustion":
@@ -462,22 +363,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Livestock":
@@ -495,22 +389,15 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)
+                        data = response.json()  # Use .json() to parse the JSON response directly
+                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
                         value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                value=amount_value,
-                                key=f"{sector}_{use_case}_{year}")
+                                                value=amount_value,
+                                                key=f"{sector}_{use_case}_{year}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        if sector in self.value and use_case in self.value[sector] and year in self.value[sector][use_case]:
-                            self.value[sector][use_case][year] = value
-                        else:
-                            self.value.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    except ET.ParseError:
-                        st.error(f"Error parsing XML from response: {response.content}")
-                    except ValueError:
-                        st.error(f"Value error converting {amount_text} to float")
+                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
+                        st.error(f"Error processing response: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             else:
