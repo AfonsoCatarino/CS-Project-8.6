@@ -360,7 +360,7 @@ class Footprint:
             total += value_float
 
         st.write(f"Total Emissions for {sector}: {total} tCO2eq")
-            st.caption("Benchmark Approximation Source: https://data.europa.eu/doi/10.2760/028705")
+        st.caption("Benchmark Approximation Source: https://data.europa.eu/doi/10.2760/028705")
             num_trees = int(self.total_emissions_by_year(selected_year) * 45)
 
             st.write(f"Number of Trees to Offset Emissions per Year: {num_trees}")
