@@ -336,7 +336,7 @@ class Footprint:
                     total_emissions += st.session_state[sector][use_case][year]
         return total_emissions
 
-     def display_values(self, sector, selected_year):
+    def display_values(self, sector, selected_year):
         if sector in self.sectors:
             total = 0
             for use_case, year_values in st.session_state.get(sector, {}).items():
