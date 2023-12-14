@@ -33,15 +33,12 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        data = response.json()  # Use .json() to parse the JSON response directly
-                        amount_value = float(data["output"][0]["amounts"][0]["value"])  # Adjust the key access according to the JSON structure
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-                    except (ValueError, KeyError) as e:  # Catch both ValueError for the float conversion and KeyError for the dictionary keys
-                        st.error(f"Error processing response: {e}")
+                        data = response.json()
+                        amount_value = float(data["output"][0]["value"])
+                    except KeyError as e:
+                        st.error(f"Key error: Missing key {e} in the response.")
+                    except ValueError as e:
+                        st.error(f"Value error: {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Fuel Combustion":
