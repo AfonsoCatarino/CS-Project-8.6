@@ -244,7 +244,6 @@ class Footprint:
                     try:
                             data = response.json()
                             output = data.get("output", [])
-
                             if output and isinstance(output, list) and len(output) > 0:
                                 total_direct_co2e = float(output[0].get("value", 0))
                                 st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
@@ -395,9 +394,9 @@ class Footprint:
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
                             self.value[sector][use_case][year] = total_direct_co2e
                     except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
-                 else:
-                     return 0
+                        print("Error decoding JSON or extracting value.")
+                else:
+                    return 0
             else:
                 value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}", value=None, key=f"{sector}_{use_case}_{year}")
                 st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
