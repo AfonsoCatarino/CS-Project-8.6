@@ -64,18 +64,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Water":
@@ -90,18 +92,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Train Freighting":
@@ -118,18 +122,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Large Goods Vehicle Freighting":
@@ -147,18 +153,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Train":
@@ -175,18 +183,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Ship Freighting":
@@ -205,18 +215,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Bus":
@@ -231,18 +243,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Ship":
@@ -257,18 +271,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Plane":
@@ -283,18 +299,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Car":
@@ -313,18 +331,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Taxi":
@@ -339,18 +359,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Landfill":
@@ -365,18 +387,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Biological Waste Treatment":
@@ -395,18 +419,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Industrial Waste Combustion":
@@ -424,18 +450,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Livestock":
@@ -454,18 +482,20 @@ class Footprint:
                 if response.status_code == 200:
                     try:
                         root = ET.fromstring(response.content)
-                        amount_text = root.find('.//Amount').text
-                        amount_value = float(amount_text)  # Convert the string to a float
-                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                value=amount_value,  # Use the extracted amount value here
-                                                key=f"{sector}_{use_case}_{year}")
-                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                        self.value[sector][use_case][year] = value
-
+                        amount_element = root.find('.//Amount')
+                        if amount_element is not None:
+                            amount_text = amount_element.text
+                            amount_value = float(amount_text)
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                            self.value[sector][use_case][year] = value
+                        else:
+                            st.error('Amount element not found in the XML response.')
+                            amount_value = 0
                     except ET.ParseError as e:
-                            st.error(f"XML parse error: {e}")
+                        st.error(f"XML parse error: {e}")
                     except ValueError as e:
-                            st.error(f"Value error: Could not convert {amount_text} to float. {e}")
+                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
             else:
