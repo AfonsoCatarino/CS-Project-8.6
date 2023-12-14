@@ -510,23 +510,24 @@ def main_menu(footprint_manager):
     st.title("Carbon Footprint Tracker")
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
     choice = st.sidebar.selectbox("Select Option", options)
-
+    if 'initialized' not in st.session_state:
+        initialize_sectors(footprint_manager)
+        st.session_state['initialized'] = True
     if choice == "Add/Update Values":
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
-        sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
-
-        for use_case in footprint_manager.sectors.get(sector, {}):
-            footprint_manager.input_value(sector, use_case, year)
-
+        print(footprint_manager.sectors)
+        sector_options = list(footprint_manager.sectors.keys())
+        if sector_options:
+            sector = st.selectbox("Choose Sector", sector_options)
+        else:
+            st.error("No sectors available to select. Please check the initialization of sectors.")
     elif choice == "Display Emissions":
         selected_year = st.selectbox("Choose Year", list(range(2010, 2050)))
         total_emissions = footprint_manager.total_emissions_by_year(selected_year)
         st.subheader(f"Total Emissions for {selected_year}: {total_emissions} tCO2eq")
-
         sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
         if st.session_state.selected_sector == sector:
             footprint_manager.display_values(sector, selected_year)
-
     elif choice == "Plot Total Emissions":
         sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
         if st.session_state.selected_sector == sector:
