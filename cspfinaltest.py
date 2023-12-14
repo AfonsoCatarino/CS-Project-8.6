@@ -34,20 +34,20 @@ class Footprint:
             headers = {
                     "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
+            }
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                try:
+                    root = ET.fromstring(response.content)
+                    amount_element = root.find('.//Amount')
+                    if amount_element is not None:
+                        amount_text = amount_element.text
+                        amount_value = float(amount_text)
+                        value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    else:
+                        st.error('Amount element not found in the XML response.')
                             amount_value = 0
                     except ET.ParseError as e:
                         st.error(f"XML parse error: {e}")
