@@ -530,7 +530,8 @@ def main_menu(footprint_manager):
         plot_total_emissions(footprint_manager, selected_sector)
 
 if __name__ == "__main__":
+    footprint_manager = Footprint()
+    initialize_sectors(footprint_manager)
     st.session_state['selected_year'] = st.session_state.get('selected_year', 2021)
     st.session_state['selected_sector'] = st.session_state.get('selected_sector', "Energy")
-    footprint_manager = Footprint()
     main_menu(footprint_manager)
