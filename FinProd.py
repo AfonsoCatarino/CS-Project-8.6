@@ -38,9 +38,7 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
-                                                    value=amount_value, 
-                                                    key=f"{sector}_{use_case}_{year}")
+                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
