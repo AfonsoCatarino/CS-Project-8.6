@@ -340,21 +340,26 @@ class Footprint:
         if sector in self.sectors:
             total = 0
             for use_case, year_values in st.session_state.get(sector, {}).items():
-                value = year_values.get(selected_year, 0.0)
-                benchmark = float(self.benchmark[sector].get(use_case, 0.0))
-                st.write(f"{use_case}: {value} (Standard Emissions: {benchmark})")
-                try:
-                    value_float = float(value)
-                    benchmark_float = float(benchmark)
-                    if value_float > benchmark_float:
-                        st.warning(f"  - Excess Emissions compared to Standard of {value_float - benchmark_float} tCO2eq")
-                    elif value_float < benchmark_float:
-                        st.success(f"  - Below Standard Emissions by {benchmark_float - value_float} tCO2eq")
-                except ValueError:
-                    st.error(f"Error: Non-numeric value encountered for {use_case}.")
-                total += value_float
+                value = year_values.get(selected_year, 0)
+                benchmark = self.benchmark[sector].get(use_case, 0)
+                if value is not None and isinstance(value, (int, float, str)):
+                    try:
+                        value_float = float(value)
+                    except ValueError:
+                        st.error(f"Value for {use_case} in {year} is not a number.")
+                        continue 
+                else:
+                    st.error(f"Value for {use_case} in {year} is missing or invalid.")
+                    continue
+            st.write(f"{use_case}: {value_float} (Standard Emissions: {benchmark})")
+            if value_float > benchmark:
+                st.warning(f"  - Excess Emissions compared to Standard of {value_float - benchmark} tCO2eq")
+            elif value_float < benchmark:
+                st.success(f"  - Below Standard Emissions by {benchmark - value_float} tCO2eq")
 
-            st.write(f"Total Emissions for {sector}: {total} tCO2eq")
+            total += value_float
+
+        st.write(f"Total Emissions for {sector}: {total} tCO2eq")
             st.caption("Benchmark Approximation Source: https://data.europa.eu/doi/10.2760/028705")
             num_trees = int(self.total_emissions_by_year(selected_year) * 45)
 
