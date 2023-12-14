@@ -508,19 +508,17 @@ def main_menu(footprint_manager):
     st.title("Carbon Footprint Tracker")
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
     choice = st.sidebar.selectbox("Select Option", options)
-
     if 'initialized' not in st.session_state:
-        st.session_state['initialized'] = True
         initialize_sectors(footprint_manager)
-
+        st.session_state['initialized'] = True
     if choice == "Add/Update Values":
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
         sector_options = list(footprint_manager.sectors.keys())
-
+        selected_sector = st.session_state.get('selected_sector', sector_options[0] if sector_options else None)
+        selected_sector = st.selectbox("Choose Sector", sector_options, index=sector_options.index(selected_sector) if selected_sector in sector_options else 0)
+        st.session_state['selected_sector'] = selected_sector
         if sector_options:
-            sector = st.selectbox("Choose Sector", sector_options)
-            if sector:  # Ensuring that a sector is selected
-                footprint_manager.input_value(sector, year)
+            footprint_manager.input_value(selected_sector, year)
         else:
             st.error("No sectors available to select. Please check the initialization of sectors.")
     elif choice == "Display Emissions":
