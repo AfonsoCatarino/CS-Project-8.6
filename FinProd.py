@@ -510,12 +510,17 @@ def main_menu(footprint_manager):
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
         sector_options = list(footprint_manager.sectors.keys())
 
+        # Use a placeholder for dynamic loading of input fields
+        sector_placeholder = st.empty()
+        use_case_placeholder = st.empty()
+
         if sector_options:
-            sector = st.selectbox("Choose Sector", sector_options)
-            # Only call input_value for the selected sector
+            sector = sector_placeholder.selectbox("Choose Sector", sector_options)
             if sector:
-                for use_case in footprint_manager.sectors[sector]:
-                    footprint_manager.input_value(sector, use_case, year)
+                # Clear previous inputs
+                use_case_placeholder.empty()
+                # Display new inputs for the selected sector
+                footprint_manager.input_value(sector, year)
         else:
             st.error("No sectors available to select. Please check the initialization of sectors.")
     elif choice == "Display Emissions":
