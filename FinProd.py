@@ -508,27 +508,29 @@ def main_menu(footprint_manager):
     st.sidebar.title("Carbon Footprint Tracker")
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
 
-    choice = st.sidebar.selectbox("Select Option", options)
+    choice = st.sidebar.radio("Select Option", options)
 
     if choice == "Add/Update Values":
         st.title("Add/Update Values")
-        year = st.selectbox("Choose Year", list(range(2010, 2050)))
-        sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
-        st.session_state.selected_sector = sector
-        for use_case in footprint_manager.sectors.get(sector, {}):
-            footprint_manager.input_value(sector, use_case, year)
+        year = st.selectbox("Choose Year", list(range(2010, 2050)), key="year")
+        sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()), key="sector")
+        st.session_state['selected_year'] = year
+        st.session_state['selected_sector'] = sector
+        footprint_manager.input_value(sector, year)
     elif choice == "Display Emissions":
-        selected_year = st.selectbox("Choose Year", list(range(2010, 2050)))
+        st.title("Display Emissions")
+        selected_year = st.session_state.get('selected_year', 2021)
+        selected_sector = st.session_state.get('selected_sector', list(footprint_manager.sectors.keys())[0])
         total_emissions = footprint_manager.total_emissions_by_year(selected_year)
         st.subheader(f"Total Emissions for {selected_year}: {total_emissions} tCO2eq")
-        sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
-        if st.session_state.selected_sector == sector:
-            footprint_manager.display_values(sector, selected_year)
+        footprint_manager.display_values(selected_sector, selected_year)
     elif choice == "Plot Total Emissions":
-        sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
-        if st.session_state.selected_sector == sector:
-            plot_total_emissions(footprint_manager)
+        st.title("Plot Total Emissions")
+        selected_sector = st.session_state.get('selected_sector', list(footprint_manager.sectors.keys())[0])
+        plot_total_emissions(footprint_manager, selected_sector)
 
 if __name__ == "__main__":
+    st.session_state['selected_year'] = st.session_state.get('selected_year', 2021)
+    st.session_state['selected_sector'] = st.session_state.get('selected_sector', "Energy")
     footprint_manager = Footprint()
     main_menu(footprint_manager)
