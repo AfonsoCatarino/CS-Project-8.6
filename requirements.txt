@@ -1,5 +1,5 @@
 streamlit
 numpy
-mathplotlib
+matplotlib
 requests
 base64
