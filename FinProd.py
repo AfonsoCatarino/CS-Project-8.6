@@ -31,18 +31,21 @@ class Footprint:
                 }
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
-                        try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                        except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                    try:
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Fuel Combustion":
                 fueltype_key = f"{sector}_{use_case}_{year}_fueltype"
                 fuelvolume_key = f"{sector}_{use_case}_{year}_fuelvolume"
@@ -56,17 +59,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Water":
                 watervol_key = f"{sector}_{use_case}_{year}_watervol"
                 watervol = st.number_input("How much water was used (in liters):", key=watervol_key)
@@ -78,17 +84,21 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
+                
             elif use_case == "Train Freighting":
                 traindistance_key = f"{sector}_{use_case}_{year}_traindistance"
                 trainloadmass_key = f"{sector}_{use_case}_{year}_trainloadmass"
@@ -102,17 +112,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Large Goods Vehicle Freighting":
                 lgvftype_key = f"{sector}_{use_case}_{year}_lgvftype"
                 lgvfdist_key = f"{sector}_{use_case}_{year}_lgvfdist"
@@ -126,17 +139,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Train":
                 traintyp_key = f"{sector}_{use_case}_{year}_traintyp"
                 traindist_key = f"{sector}_{use_case}_{year}_traindist"
@@ -150,17 +166,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Ship Freighting":
                 shiptype_key = f"{sector}_{use_case}_{year}_shiptype"
                 shipdistance_key = f"{sector}_{use_case}_{year}_shipdistance"
@@ -176,17 +195,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Bus":
                 busdist_key = f"{sector}_{use_case}_{year}_busdist"
                 busdist = st.number_input("What distance was traveled by bus (km):", key=busdist_key)
@@ -198,17 +220,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Ship":
                 shipdist_key = f"{sector}_{use_case}_{year}_shipdist"
                 shipdist = st.number_input("What distance was traveled by ship (km):", key=shipdist_key)
@@ -220,17 +245,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Plane":
                 planedist_key = f"{sector}_{use_case}_{year}_planedist"
                 planedist = st.number_input("What distance was traveled by plane (km):", key=planedist_key)
@@ -242,16 +270,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Car":
                 carfueltype_key = f"{sector}_{use_case}_{year}_carfueltype"
                 carsize_key = f"{sector}_{use_case}_{year}_carsize"
@@ -267,17 +299,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Taxi":
                 taxdist_key = f"{sector}_{use_case}_{year}_taxdist"
                 taxdist = st.number_input("What distance was traveled by taxi", key=taxdist_key)
@@ -289,17 +324,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Landfill":
                 metrec_key = f"{sector}_{use_case}_{year}_metrec"
                 metrec = st.number_input("Volume of Methane Recovered (m3)", key=metrec_key)
@@ -311,17 +349,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Biological Waste Treatment":
                 btype_key = f"{sector}_{use_case}_{year}_btype"
                 qtmethane_key = f"{sector}_{use_case}_{year}_qtmethane"
@@ -337,17 +378,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Industrial Waste Combustion":
                 ind_key = f"{sector}_{use_case}_{year}_ind"
                 qtburned_key = f"{sector}_{use_case}_{year}_qtburned"
@@ -361,17 +405,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                            data = response.json()
-                            output = data.get("output", [])
-
-                            if output and isinstance(output, list) and len(output) > 0:
-                                total_direct_co2e = float(output[0].get("value", 0))
-                                st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                                self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                            print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Livestock":
                 ltype_key = f"{sector}_{use_case}_{year}_ltype"
                 region_key = f"{sector}_{use_case}_{year}_region"
@@ -387,16 +434,20 @@ class Footprint:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
-                        data = response.json()
-                        output = data.get("output", [])
-                        if output and isinstance(output, list) and len(output) > 0:
-                            total_direct_co2e = float(output[0].get("value", 0))
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = total_direct_co2e
-                            self.value[sector][use_case][year] = total_direct_co2e
-                    except (json.JSONDecodeError, ValueError):
-                        print("Error decoding JSON or extracting value.")
+                        root = ET.fromstring(response.content)
+                        amount_text = root.find('.//Amount').text
+                        amount_value = float(amount_text)
+                        value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}",
+                                value=amount_value,
+                                key=f"{sector}_{use_case}_{year}")
+                        st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
+                        self.value[sector][use_case][year] = value
+                    except ET.ParseError:
+                        st.error(f"Error parsing XML from response: {response.content}")
+                    except ValueError:
+                        st.error(f"Value error converting {amount_text} to float")
                 else:
-                    return 0
+                    st.error(f"Received response code {response.status_code}: {response.content}")
             else:
                 value = st.number_input(f"Enter Value for {use_case} in tCO2eq for {year}", value=None, key=f"{sector}_{use_case}_{year}")
                 st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
