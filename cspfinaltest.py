@@ -83,62 +83,6 @@ class Footprint:
                         st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Transport by Bus":
-                busdist_key = f"{sector}_{use_case}_{year}_busdist"
-                busdist = st.number_input("What distance was traveled by bus (km):", key=busdist_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Generic_bus_transport/calculation?type=typical&values.distance={busdist}"
-                headers = {
-                    "Accept": "application/xml",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Transport by Ship":
-                shipdist_key = f"{sector}_{use_case}_{year}_shipdist"
-                shipdist = st.number_input("What distance was traveled by ship (km):", key=shipdist_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Generic_ship_transport/calculation?type=ferry&values.distance={shipdist}"
-                headers = {
-                    "Accept": "application/xml",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Plane":
                 planedist_key = f"{sector}_{use_case}_{year}_planedist"
                 planedist = st.number_input("What distance was traveled by plane (km):", key=planedist_key)
@@ -175,34 +119,6 @@ class Footprint:
                 carsize = st.selectbox("What size is the car", ["small", "medium", "large"], key=carsize_key)
                 cardistance = st.number_input("What distance did you travel by car", key=cardistance_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_car_transport/calculation?fuel={carfueltype}&size={carsize}&values.distance={cardistance}"
-                headers = {
-                    "Accept": "application/xml",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Transport by Taxi":
-                taxdist_key = f"{sector}_{use_case}_{year}_taxdist"
-                taxdist = st.number_input("What distance was traveled by taxi", key=taxdist_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Generic_taxi_transport/calculation?values.distance={taxdist}"
                 headers = {
                     "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
