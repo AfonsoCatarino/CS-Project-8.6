@@ -38,7 +38,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -68,7 +69,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -96,7 +98,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -124,7 +127,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -152,7 +156,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -184,7 +189,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -244,7 +250,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -275,7 +282,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -307,7 +315,8 @@ class Footprint:
                         if amount_element is not None:
                             amount_text = amount_element.text
                             amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
+                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = amount_value
+                            self.value[sector][use_case][year] = amount_value
                             st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                             self.value[sector][use_case][year] = value
                         else:
@@ -332,40 +341,30 @@ class Footprint:
         total_emissions = 0
         for sector in self.value.keys():
             for use_case in self.value[sector].keys():
-                if st.session_state.get(sector, {}).get(use_case, {}).get(year):
-                    total_emissions += st.session_state[sector][use_case][year]
+                total_emissions += self.value[sector][use_case].get(year, 0)
         return total_emissions
         
     def display_values(self, sector, selected_year):
         if sector in self.sectors:
             total = 0
-            for use_case, year_values in st.session_state.get(sector, {}).items():
-                value = year_values.get(selected_year, 0)
-                benchmark = self.benchmark[sector].get(use_case, 0)
-                if value is not None and isinstance(value, (int, float, str)):
-                    try:
-                        value_float = float(value)
-                    except ValueError:
-                        st.error(f"Value for {use_case} in {year} is not a number.")
-                        continue 
-                else:
-                    st.error(f"Value for {use_case} in {year} is missing or invalid.")
-                    continue
-            st.write(f"{use_case}: {value_float} (Standard Emissions: {benchmark})")
-            if value_float > benchmark:
-                st.warning(f"  - Excess Emissions compared to Standard of {value_float - benchmark} tCO2eq")
-            elif value_float < benchmark:
-                st.success(f"  - Below Standard Emissions by {benchmark - value_float} tCO2eq")
-
-            total += value_float
-
-        st.write(f"Total Emissions for {sector}: {total} tCO2eq")
-        st.caption("Benchmark Approximation Source: https://data.europa.eu/doi/10.2760/028705")
-        num_trees = int(self.total_emissions_by_year(selected_year) * 45)
-        st.write(f"Number of Trees to Offset Emissions per Year: {num_trees}")
-        forest = generate_forest(num_trees)
-        plot_forest(forest)
-        st.caption("Approximately 45 Trees per Ton of GHGs Emitted")
+            for use_case in self.sectors[sector]:
+                value_float = self.value.get(sector, {}).get(use_case, {}).get(selected_year, 0)
+                benchmark = self.benchmark.get(sector, {}).get(use_case, 0)
+                st.write(f"{use_case}: {value_float} tCO2eq (Benchmark: {benchmark} tCO2eq)") 
+                if value_float > benchmark:
+                    st.warning(f"  - Excess Emissions compared to Benchmark: {value_float - benchmark} tCO2eq")
+                elif value_float < benchmark:
+                    st.success(f"  - Below Benchmark Emissions by: {benchmark - value_float} tCO2eq")
+                
+                total += value_float
+        
+            st.write(f"Total Emissions for {sector} in {selected_year}: {total} tCO2eq")
+            st.caption("Benchmark Approximation Source: https://data.europa.eu/doi/10.2760/028705")
+            num_trees = int(total * 45)  # Assuming 45 trees offset one ton of CO2eq
+            st.write(f"Number of Trees to Offset Emissions for {selected_year}: {num_trees}")
+            forest = generate_forest(num_trees)
+            plot_forest(forest)
+            st.caption("Approximately 45 Trees per Ton of CO2eq")
 
 def generate_forest(num_trees):
     forest = []
