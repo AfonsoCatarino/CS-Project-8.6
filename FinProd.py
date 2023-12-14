@@ -80,157 +80,6 @@ class Footprint:
                         st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Water":
-                watervol_key = f"{sector}_{use_case}_{year}_watervol"
-                watervol = st.number_input("How much water was used (in liters):", key=watervol_key)
-                url = f"https://api.carbonkit.net/3.6/categories/water/calculation?type=cold&values.volume{watervol}"
-                headers = {
-                    "Accept": "application/xml",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Train Freighting":
-                traindistance_key = f"{sector}_{use_case}_{year}_traindistance"
-                trainloadmass_key = f"{sector}_{use_case}_{year}_trainloadmass"
-                traindistance = st.number_input("What is the distance freighted (in km):", key=traindistance_key)
-                trainloadmass = st.number_input("What is the load mass (in tonnes):", key=trainloadmass_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Train_Freight_Defra/calculation?values.distance={traindistance}&values.mass{trainloadmass}"
-                headers = {
-                    "Accept": "application/json",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Large Goods Vehicle Freighting":
-                lgvftype_key = f"{sector}_{use_case}_{year}_lgvftype"
-                lgvfdist_key = f"{sector}_{use_case}_{year}_lgvfdist"
-                lgvftype = st.selectbox("What is the size of the vehicle:", ["Articulated", "NonArticulated"], key=lgvftype_key)
-                lgvfdist = st.number_input("What is the distance freighted:", key=lgvfdist_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Generic_large_goods_vehicle_transport/calculation?size={lgvftype}&values.distance{lgvfdist}"
-                headers = {
-                    "Accept": "application/xml",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Transport by Train":
-                traintyp_key = f"{sector}_{use_case}_{year}_traintyp"
-                traindist_key = f"{sector}_{use_case}_{year}_traindist"
-                traintyp = st.selectbox("What type of train are you taking:", ["national", "underground", "tram"], key=traintyp_key)
-                traindist = st.number_input("What distance was traveled by train (km):", key=traindist_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Generic_train_transport/calculation?type={traintyp}&values.distance={traindist}"
-                headers = {
-                    "Accept": "application/xml",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Ship Freighting":
-                shiptype_key = f"{sector}_{use_case}_{year}_shiptype"
-                shipdistance_key = f"{sector}_{use_case}_{year}_shipdistance"
-                shipmass_key = f"{sector}_{use_case}_{year}_shipmass"
-                shiptype = st.selectbox("What type of ship is being used for freighting:", ["small tanker", "large tanker"], key=shiptype_key)
-                shipdistance = st.number_input("What distance was the load freighted (in km):", key=shipdistance_key)
-                shipmass = st.number_input("What is the mass of the load freighted (in tonnes):", key=shipmass_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Ship_Freight_Defra/calculation?type={shiptype}&values.distance{shipdistance}&values.mass={shipmass}"
-                headers = {
-                    "Accept": "application/xml",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
             elif use_case == "Transport by Bus":
                 busdist_key = f"{sector}_{use_case}_{year}_busdist"
                 busdist = st.number_input("What distance was traveled by bus (km):", key=busdist_key)
@@ -351,34 +200,6 @@ class Footprint:
                 taxdist_key = f"{sector}_{use_case}_{year}_taxdist"
                 taxdist = st.number_input("What distance was traveled by taxi", key=taxdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_taxi_transport/calculation?values.distance={taxdist}"
-                headers = {
-                    "Accept": "application/xml",
-                    "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
-                }
-                response = requests.get(url, headers=headers)
-                if response.status_code == 200:
-                    try:
-                        root = ET.fromstring(response.content)
-                        amount_element = root.find('.//Amount')
-                        if amount_element is not None:
-                            amount_text = amount_element.text
-                            amount_value = float(amount_text)
-                            value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
-                            st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
-                            self.value[sector][use_case][year] = value
-                        else:
-                            st.error('Amount element not found in the XML response.')
-                            amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
-                else:
-                    st.error(f"Received response code {response.status_code}: {response.content}")
-            elif use_case == "Landfill":
-                metrec_key = f"{sector}_{use_case}_{year}_metrec"
-                metrec = st.number_input("Volume of Methane Recovered (m3)", key=metrec_key)
-                url = f"https://api.carbonkit.net/3.6/categories/Landfill_emissions_based_on_methane_recovery/calculation?values.collected{metrec}"
                 headers = {
                     "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
@@ -561,14 +382,12 @@ def initialize_sectors(footprint_manager):
     sectors_data = {
         "Energy": ["Electricity", "Fuel Combustion"],
         "Production and Manufacturing": ["Production Processes"],
-        "Transportation and Freighting": [
+        "Transportation": [
             "Transport by Taxi", "Transport by Car", "Transport by Plane",
             "Transport by Bus", "Transport by Train", "Transport by Ship",
-            "Ship Freighting", "Large Goods Vehicle Freighting", "Train Freighting",
-            "Plane Freighting"
         ],
-        "Water Supply and Waste Management": [
-            "Water", "Landfill", "Biological Waste Treatment", "Industrial Waste Combustion"
+        "Waste Management": [
+            "Biological Waste Treatment", "Industrial Waste Combustion"
         ],
         "Wholesale and Retail Trade": ["Distribution Centers"],
         "Agriculture": ["Livestock", "Farming"],
@@ -580,20 +399,14 @@ def initialize_sectors(footprint_manager):
     footprint_manager.emission_benchmark("Energy", "Electricity", 12.1)
     footprint_manager.emission_benchmark("Energy", "Fuel Combustion", 42)
     footprint_manager.emission_benchmark("Production and Manufacturing", "Production Processes", 18.3)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Transport by Taxi", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Transport by Car", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Transport by Plane", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Transport by Bus", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Transport by Train", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Transport by Ship", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Ship Freighting", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Large Goods Vehicle Freighting", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Train Freighting", 1)
-    footprint_manager.emission_benchmark("Transportation and Freighting", "Plane Freighting", 1)
-    footprint_manager.emission_benchmark("Water Supply and Waste Management", "Water", 0.8)
-    footprint_manager.emission_benchmark("Water Supply and Waste Management", "Landfill", 1)
-    footprint_manager.emission_benchmark("Water Supply and Waste Management", "Biological Waste Treatment", 1)
-    footprint_manager.emission_benchmark("Water Supply and Waste Management", "Industrial Waste Combustion", 1)
+    footprint_manager.emission_benchmark("Transportation", "Transport by Taxi", 1)
+    footprint_manager.emission_benchmark("Transportation", "Transport by Car", 1)
+    footprint_manager.emission_benchmark("Transportation", "Transport by Plane", 1)
+    footprint_manager.emission_benchmark("Transportation", "Transport by Bus", 1)
+    footprint_manager.emission_benchmark("Transportation", "Transport by Train", 1)
+    footprint_manager.emission_benchmark("Transportation", "Transport by Ship", 1)
+    footprint_manager.emission_benchmark("Waste Management", "Biological Waste Treatment", 1)
+    footprint_manager.emission_benchmark("Waste Management", "Industrial Waste Combustion", 1)
     footprint_manager.emission_benchmark("Wholesale and Retail Trade", "Distribution Centers", 2.2)
     footprint_manager.emission_benchmark("Agriculture", "Livestock", 48.55)
     footprint_manager.emission_benchmark("Agriculture", "Farming", 17.32)
