@@ -46,13 +46,6 @@ class Footprint:
                         value = st.write(f"Value for {use_case} in tCO2eq for {year}: {amount_value}")
                         st.session_state.setdefault(sector, {}).setdefault(use_case, {})[year] = value
                         self.value[sector][use_case][year] = value
-                    else:
-                        st.error('Amount element not found in the XML response.')
-                        amount_value = 0
-                    except ET.ParseError as e:
-                        st.error(f"XML parse error: {e}")
-                    except ValueError as e:
-                        st.error(f"Value error: Could not convert {amount_text} to float. {e}")
                 else:
                     st.error(f"Received response code {response.status_code}: {response.content}")
 
