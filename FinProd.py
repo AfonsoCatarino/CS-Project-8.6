@@ -429,20 +429,26 @@ def plot_forest(forest):
     st.pyplot(fig)
             
 def initialize_sectors(footprint_manager):
-    sectors_data = {
-        "Energy": ["Electricity", "Fuel Combustion"],
-        "Production and Manufacturing": ["Production Processes"],
-        "Transportation and Freighting": ["Transport by Taxi", "Transport by Car", "Transport by Plane", "Transport by Bus", "Transport by Train", "Transport by Ship", "Ship Freighting", "Large Goods Vehicle Freighting", "Train Freighting", "Plane Freighting"],
-        "Water Supply and Waste Management": ["Water", "Landfill", "Biological Waste Treatment", "Industrial Waste Combustion"],
-        "Wholesale and Retail Trade": ["Distribution Centers"],
-        "Agriculture": ["Livestock", "Farming"],
-    }
-    
-    for sector, use_cases in sectors_data.items():
-        footprint_manager.emission_sector(sector, use_cases)
-        
-        for use_case in use_cases:
-            footprint_manager.input_value(sector, use_case, year = 2022)
+    if not hasattr(st.session_state, "initialized_sectors"):
+        st.session_state.initialized_sectors = True
+
+        sectors_data = {
+            "Energy": ["Electricity", "Fuel Combustion"],
+            "Production and Manufacturing": ["Production Processes"],
+            "Transportation and Freighting": ["Transport by Taxi", "Transport by Car", "Transport by Plane", "Transport by Bus", "Transport by Train", "Transport by Ship", "Ship Freighting", "Large Goods Vehicle Freighting", "Train Freighting", "Plane Freighting"],
+            "Water Supply and Waste Management": ["Water", "Landfill", "Biological Waste Treatment", "Industrial Waste Combustion"],
+            "Wholesale and Retail Trade": ["Distribution Centers"],
+            "Agriculture": ["Livestock", "Farming"],
+        }
+
+        for sector, use_cases in sectors_data.items():
+            footprint_manager.emission_sector(sector, use_cases)
+
+            for use_case in use_cases:
+                sector_key = f"{sector}_{use_case}"
+                if not hasattr(st.session_state, sector_key):
+                    st.session_state[sector_key] = True
+                    footprint_manager.input_value(sector, use_case, year=2022)
     
     footprint_manager.emission_benchmark("Energy", "Electricity", 12.1)
     footprint_manager.emission_benchmark("Energy", "Fuel Combustion", 42)
