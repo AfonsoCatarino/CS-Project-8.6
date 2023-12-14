@@ -26,13 +26,12 @@ class Footprint:
     def input_value_too(self, sector, use_case, year):
         use_cases = self.sectors.get(sector, [])
         for use_case in use_cases:
-            if use_case == "Electricity":
-                creading_key = f"{sector}_{use_case}_{year}_creading"
-                preading_key = f"{sector}_{use_case}_{year}_preading"
-                creading = st.number_input("What is the current reading on the electricity counter (Kwh/year):", key=creading_key)
-                preading = st.number_input("What was the last reading on the electricity counter (Kwh/year):", key=preading_key)
-                url = f"https://api.carbonkit.net/3.6/categories/electricity/calculation?country=Switzerland&values.currentReading={creading}&values.lastReading={preading}"
-                headers = {
+            creading_key = f"{sector}_{use_case}_{year}_creading_{use_case}"
+            preading_key = f"{sector}_{use_case}_{year}_preading_{use_case}"
+            creading = st.number_input("What is the current reading on the electricity counter (Kwh/year):", key=creading_key)
+            preading = st.number_input("What was the last reading on the electricity counter (Kwh/year):", key=preading_key)
+            url = f"https://api.carbonkit.net/3.6/categories/electricity/calculation?country=Switzerland&values.currentReading={creading}&values.lastReading={preading}"
+            headers = {
                     "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
