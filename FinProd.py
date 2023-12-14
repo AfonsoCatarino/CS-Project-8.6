@@ -30,7 +30,6 @@ class Footprint:
                     "Accept": "application/xml",
                     "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
                 }
-                amount_value = none
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
                     try:
