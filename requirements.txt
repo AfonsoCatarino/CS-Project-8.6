@@ -1,0 +1,5 @@
+streamlit
+numpy
+mathplotlib
+requests
+base64
