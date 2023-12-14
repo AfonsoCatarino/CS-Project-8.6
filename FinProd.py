@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # In[19]:
-ip install matplotlib
+pip install matplotlib
 
 import streamlit as st
 import numpy as np
