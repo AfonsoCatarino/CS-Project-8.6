@@ -512,15 +512,17 @@ def main_menu(footprint_manager):
         initialize_sectors(footprint_manager)
         st.session_state['initialized'] = True
     if choice == "Add/Update Values":
-        year = st.selectbox("Choose Year", list(range(2010, 2050)))
+        if 'year' not in st.session_state:
+            st.session_state['year'] = 2022
+        if 'selected_sector' not in st.session_state:
+            st.session_state['selected_sector'] = "Energy"
+        st.session_state['year'] = st.selectbox("Choose Year", list(range(2010, 2050)), index=list(range(2010, 2050)).index(st.session_state['year']))
         sector_options = list(footprint_manager.sectors.keys())
-        selected_sector = st.session_state.get('selected_sector', sector_options[0] if sector_options else None)
-        selected_sector = st.selectbox("Choose Sector", sector_options, index=sector_options.index(selected_sector) if selected_sector in sector_options else 0)
-        st.session_state['selected_sector'] = selected_sector
-        if sector_options:
-            footprint_manager.input_value(selected_sector, year)
-        else:
+        if not sector_options:
             st.error("No sectors available to select. Please check the initialization of sectors.")
+            return
+        st.session_state['selected_sector'] = st.selectbox("Choose Sector", sector_options, index=sector_options.index(st.session_state['selected_sector']))
+        footprint_manager.input_value(st.session_state['selected_sector'], st.session_state['year'])
     elif choice == "Display Emissions":
         selected_year = st.selectbox("Choose Year", list(range(2010, 2050)))
         total_emissions = footprint_manager.total_emissions_by_year(selected_year)
