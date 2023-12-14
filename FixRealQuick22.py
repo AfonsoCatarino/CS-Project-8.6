@@ -361,12 +361,11 @@ class Footprint:
 
         st.write(f"Total Emissions for {sector}: {total} tCO2eq")
         st.caption("Benchmark Approximation Source: https://data.europa.eu/doi/10.2760/028705")
-            num_trees = int(self.total_emissions_by_year(selected_year) * 45)
-
-            st.write(f"Number of Trees to Offset Emissions per Year: {num_trees}")
-            forest = generate_forest(num_trees)
-            plot_forest(forest)
-            st.caption("Approximately 45 Trees per Ton of GHGs Emitted")
+        num_trees = int(self.total_emissions_by_year(selected_year) * 45)
+        st.write(f"Number of Trees to Offset Emissions per Year: {num_trees}")
+        forest = generate_forest(num_trees)
+        plot_forest(forest)
+        st.caption("Approximately 45 Trees per Ton of GHGs Emitted")
 
 def generate_forest(num_trees):
     forest = []
