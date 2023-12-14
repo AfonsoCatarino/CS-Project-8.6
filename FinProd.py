@@ -16,9 +16,9 @@ class Footprint:
         self.benchmark[sector] = {use_case: 0 for use_case in use_cases}
         self.value[sector] = {use_case: {} for use_case in use_cases}
 
-    def input_value(self, sector, use_case, year):
-        if sector in self.sectors and use_case in self.sectors[sector]:
-            st.write(f"### {use_case} ({sector})")
+    def input_value(self, sector, year):
+        use_cases = self.sectors.get(sector, [])
+        for use_case in use_cases:
             if use_case == "Electricity":
                 creading_key = f"{sector}_{use_case}_{year}_creading"
                 preading_key = f"{sector}_{use_case}_{year}_preading"
@@ -456,10 +456,7 @@ def plot_forest(forest):
     ax.axis('off')
     st.pyplot(fig)
             
-def initialize_sectors(footprint_manager):
-    if not hasattr(st.session_state, "initialized_sectors"):
-        st.session_state.initialized_sectors = True
-
+def initialize_sectors(footprint_manager, selected_sector):
         sectors_data = {
             "Energy": ["Electricity", "Fuel Combustion"],
             "Production and Manufacturing": ["Production Processes"],
@@ -469,14 +466,9 @@ def initialize_sectors(footprint_manager):
             "Agriculture": ["Livestock", "Farming"],
         }
 
-        for sector, use_cases in sectors_data.items():
-            footprint_manager.emission_sector(sector, use_cases)
-
-            for use_case in use_cases:
-                sector_key = f"{sector}_{use_case}"
-                if not hasattr(st.session_state, sector_key):
-                    st.session_state[sector_key] = True
-                    footprint_manager.input_value(sector, use_case, year=2022)
+        if selected_sector in sectors_data:
+            use_cases = sectors_data[selected_sector]
+            footprint_manager.emission_sector(selected_sector, use_cases)
     
     footprint_manager.emission_benchmark("Energy", "Electricity", 12.1)
     footprint_manager.emission_benchmark("Energy", "Fuel Combustion", 42)
@@ -505,22 +497,19 @@ def get_headers_placeholder():
         "Accept": "application/json",
         "Authorization": "Basic " + base64.b64encode(b"AC221:fozzie7").decode("utf-8")
     }
-
 def main_menu(footprint_manager):
     st.title("Carbon Footprint Tracker")
+    sector_options = list(footprint_manager.sectors.keys()) if footprint_manager.sectors else []
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
     choice = st.sidebar.selectbox("Select Option", options)
-    if 'initialized' not in st.session_state:
-        initialize_sectors(footprint_manager)
-        st.session_state['initialized'] = True
     if choice == "Add/Update Values":
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
-        print(footprint_manager.sectors)
-        sector_options = list(footprint_manager.sectors.keys())
         if sector_options:
             sector = st.selectbox("Choose Sector", sector_options)
+            if sector:
+                footprint_manager.input_value(sector, year)
         else:
-            st.error("No sectors available to select. Please check the initialization of sectors.")
+            st.write("No sectors available to select.")
     elif choice == "Display Emissions":
         selected_year = st.selectbox("Choose Year", list(range(2010, 2050)))
         total_emissions = footprint_manager.total_emissions_by_year(selected_year)
