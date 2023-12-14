@@ -457,17 +457,24 @@ def plot_forest(forest):
     st.pyplot(fig)
             
 def initialize_sectors(footprint_manager):
-        sectors_data = {
-            "Energy": ["Electricity", "Fuel Combustion"],
-            "Production and Manufacturing": ["Production Processes"],
-            "Transportation and Freighting": ["Transport by Taxi", "Transport by Car", "Transport by Plane", "Transport by Bus", "Transport by Train", "Transport by Ship", "Ship Freighting", "Large Goods Vehicle Freighting", "Train Freighting", "Plane Freighting"],
-            "Water Supply and Waste Management": ["Water", "Landfill", "Biological Waste Treatment", "Industrial Waste Combustion"],
-            "Wholesale and Retail Trade": ["Distribution Centers"],
-            "Agriculture": ["Livestock", "Farming"],
-        }
+    sectors_data = {
+        "Energy": ["Electricity", "Fuel Combustion"],
+        "Production and Manufacturing": ["Production Processes"],
+        "Transportation and Freighting": [
+            "Transport by Taxi", "Transport by Car", "Transport by Plane",
+            "Transport by Bus", "Transport by Train", "Transport by Ship",
+            "Ship Freighting", "Large Goods Vehicle Freighting", "Train Freighting",
+            "Plane Freighting"
+        ],
+        "Water Supply and Waste Management": [
+            "Water", "Landfill", "Biological Waste Treatment", "Industrial Waste Combustion"
+        ],
+        "Wholesale and Retail Trade": ["Distribution Centers"],
+        "Agriculture": ["Livestock", "Farming"],
+    }
 
-        for sector, use_cases in sectors_data.items():
-            footprint_manager.emission_sector(sector, use_cases)
+    for sector, use_cases in sectors_data.items():
+        footprint_manager.emission_sector(sector, use_cases)
     
     footprint_manager.emission_benchmark("Energy", "Electricity", 12.1)
     footprint_manager.emission_benchmark("Energy", "Fuel Combustion", 42)
@@ -489,7 +496,8 @@ def initialize_sectors(footprint_manager):
     footprint_manager.emission_benchmark("Wholesale and Retail Trade", "Distribution Centers", 2.2)
     footprint_manager.emission_benchmark("Agriculture", "Livestock", 48.55)
     footprint_manager.emission_benchmark("Agriculture", "Farming", 17.32)
-    
+
+    print("Sectors initialized:", footprint_manager.sectors)
 
 def get_headers_placeholder():
     return {
@@ -501,25 +509,17 @@ def main_menu(footprint_manager):
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
     choice = st.sidebar.selectbox("Select Option", options)
 
-    # Initialize sectors if not done yet
     if 'initialized' not in st.session_state:
-        initialize_sectors(footprint_manager)
         st.session_state['initialized'] = True
+        initialize_sectors(footprint_manager)
 
     if choice == "Add/Update Values":
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
         sector_options = list(footprint_manager.sectors.keys())
 
-        # Use a placeholder for dynamic loading of input fields
-        sector_placeholder = st.empty()
-        use_case_placeholder = st.empty()
-
         if sector_options:
-            sector = sector_placeholder.selectbox("Choose Sector", sector_options)
-            if sector:
-                # Clear previous inputs
-                use_case_placeholder.empty()
-                # Display new inputs for the selected sector
+            sector = st.selectbox("Choose Sector", sector_options)
+            if sector:  # Ensuring that a sector is selected
                 footprint_manager.input_value(sector, year)
         else:
             st.error("No sectors available to select. Please check the initialization of sectors.")
