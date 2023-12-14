@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[19]:
-pip install matplotlib
-
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -505,10 +499,3 @@ if __name__ == "__main__":
     footprint_manager = Footprint()
     initialize_sectors(footprint_manager)
     main_menu(footprint_manager)
-
-
-# In[ ]:
-
-
-
-
