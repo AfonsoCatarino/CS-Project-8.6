@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import requests
 import base64
-import xml.etree.ElementTree as ET
+import json
 
 class Footprint:
     def __init__(self):
@@ -20,8 +20,10 @@ class Footprint:
         if sector in self.sectors and use_case in self.sectors[sector]:
             st.write(f"### {use_case} ({sector})")
             if use_case == "Electricity":
-                creading = st.number_input("What is the current reading on the electricity counter (Kwh/year):")
-                preading = st.number_input("What was the last reading on the electricity counter (Kwh/year):")
+                creading_key = f"{sector}_{use_case}_{year}_creading"
+                preading_key = f"{sector}_{use_case}_{year}_preading"
+                creading = st.number_input("What is the current reading on the electricity counter (Kwh/year):", key=creading_key)
+                preading = st.number_input("What was the last reading on the electricity counter (Kwh/year):", key=preading_key)
                 url = f"https://api.carbonkit.net/3.6/categories/electricity/calculation?country=Switzerland&values.currentReading={creading}&values.lastReading={preading}"
                 headers = {
                     "Accept": "application/json",
@@ -42,8 +44,10 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Fuel Combustion":
-                fueltype = st.selectbox(f"Select an option for {use_case}", ["Diesel", "Petrol", "Gas oil", "Natural Gas", "Coal (industrial)", "Burning Oil"])
-                fuelvolume = st.number_input(f"What volume of it have you used (net): ")
+                fueltype_key = f"{sector}_{use_case}_{year}_fueltype"
+                fuelvolume_key = f"{sector}_{use_case}_{year}_fuelvolume"
+                fueltype = st.selectbox("Select an option for Fuel Combustion", ["Diesel", "Petrol", "Gas oil", "Natural Gas", "Coal (industrial)", "Burning Oil"], key=fueltype_key)
+                fuelvolume = st.number_input("What volume of it have you used (net):", key=fuelvolume_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Fuel_Defra/calculation?fuel={fueltype}&netOrgross=net&unit=volume&values.volume={fuelvolume}"
                 headers = {
                     "Accept": "application/json",
@@ -64,7 +68,8 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Water":
-                watervol = st.number_input(f"How much water was used (in liters)")
+                watervol_key = f"{sector}_{use_case}_{year}_watervol"
+                watervol = st.number_input("How much water was used (in liters):", key=watervol_key)
                 url = f"https://api.carbonkit.net/3.6/categories/water/calculation?type=cold&values.volume{watervol}"
                 headers = {
                     "Accept": "application/json",
@@ -85,8 +90,10 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Train Freighting":
-                traindistance = st.number_input(f"What is the distance freighted (in km)")
-                trainloadmass = st.number_input(f"What is the load mass (in tonnes)")
+                traindistance_key = f"{sector}_{use_case}_{year}_traindistance"
+                trainloadmass_key = f"{sector}_{use_case}_{year}_trainloadmass"
+                traindistance = st.number_input("What is the distance freighted (in km):", key=traindistance_key)
+                trainloadmass = st.number_input("What is the load mass (in tonnes):", key=trainloadmass_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Train_Freight_Defra/calculation?values.distance={traindistance}&values.mass{trainloadmass}"
                 headers = {
                     "Accept": "application/json",
@@ -107,8 +114,10 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Large Goods Vehicle Freighting":
-                lgvftype = st.selectbox(f"What is the size of the vehicle", ["Articulated", "NonArticulated"])
-                lgvfdist = st.number_input(f"What is the distance freighted")
+                lgvftype_key = f"{sector}_{use_case}_{year}_lgvftype"
+                lgvfdist_key = f"{sector}_{use_case}_{year}_lgvfdist"
+                lgvftype = st.selectbox("What is the size of the vehicle:", ["Articulated", "NonArticulated"], key=lgvftype_key)
+                lgvfdist = st.number_input("What is the distance freighted:", key=lgvfdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_large_goods_vehicle_transport/calculation?size={lgvftype}&values.distance{lgvfdist}"
                 headers = {
                     "Accept": "application/json",
@@ -129,8 +138,10 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Transport by Train":
-                traintyp = st.selectbox(f"What type of train are you taking", ["national", "underground", "tram"])
-                traindist = st.number_input(f"What distance was traveled by train (km)")
+                traintyp_key = f"{sector}_{use_case}_{year}_traintyp"
+                traindist_key = f"{sector}_{use_case}_{year}_traindist"
+                traintyp = st.selectbox("What type of train are you taking:", ["national", "underground", "tram"], key=traintyp_key)
+                traindist = st.number_input("What distance was traveled by train (km):", key=traindist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_train_transport/calculation?type={traintyp}&values.distance={traindist}"
                 headers = {
                     "Accept": "application/json",
@@ -151,9 +162,12 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Ship Freighting":
-                shiptype = st.selectbox(f"What type of ship is being used for freighting", ["small tanker", "large tanker"])
-                shipdistance = st.number_input(f"What distance was the load freighted (in km)")
-                shipmass = st.number_input(f"What is the mass of the load freighted (in tonnes)")
+                shiptype_key = f"{sector}_{use_case}_{year}_shiptype"
+                shipdistance_key = f"{sector}_{use_case}_{year}_shipdistance"
+                shipmass_key = f"{sector}_{use_case}_{year}_shipmass"
+                shiptype = st.selectbox("What type of ship is being used for freighting:", ["small tanker", "large tanker"], key=shiptype_key)
+                shipdistance = st.number_input("What distance was the load freighted (in km):", key=shipdistance_key)
+                shipmass = st.number_input("What is the mass of the load freighted (in tonnes):", key=shipmass_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Ship_Freight_Defra/calculation?type={shiptype}&values.distance{shipdistance}&values.mass={shipmass}"
                 headers = {
                     "Accept": "application/json",
@@ -174,7 +188,8 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Transport by Bus":
-                busdist = st.number_input(f"What distance was traveled by bus (km)")
+                busdist_key = f"{sector}_{use_case}_{year}_busdist"
+                busdist = st.number_input("What distance was traveled by bus (km):", key=busdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_bus_transport/calculation?type=typical&values.distance={busdist}"
                 headers = {
                     "Accept": "application/json",
@@ -195,7 +210,8 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Transport by Ship":
-                shipdist = st.number_input(f"What distance was traveled by ship (km)")
+                shipdist_key = f"{sector}_{use_case}_{year}_shipdist"
+                shipdist = st.number_input("What distance was traveled by ship (km):", key=shipdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_ship_transport/calculation?type=ferry&values.distance={shipdist}"
                 headers = {
                     "Accept": "application/json",
@@ -216,7 +232,8 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Transport by Plane":
-                planedist = st.number_input(f"What distance was traveled by plane (km)")
+                planedist_key = f"{sector}_{use_case}_{year}_planedist"
+                planedist = st.number_input("What distance was traveled by plane (km):", key=planedist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_plane_transport/calculation?type=domestic&size=return&values.distance={planedist}"
                 headers = {
                     "Accept": "application/json",
@@ -237,9 +254,12 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Transport by Car":
-                carfueltype = st.selectbox(f"What does the car run on", ["petrol", "diesel"])
-                carsize = st.selectbox(f"What size is the car", ["small", "medium", "large"])
-                cardistance = st.number_input(f"What distance did you travel by car")
+                carfueltype_key = f"{sector}_{use_case}_{year}_carfueltype"
+                carsize_key = f"{sector}_{use_case}_{year}_carsize"
+                cardistance_key = f"{sector}_{use_case}_{year}_cardistance"
+                carfueltype = st.selectbox("What does the car run on", ["petrol", "diesel"], key=carfueltype_key)
+                carsize = st.selectbox("What size is the car", ["small", "medium", "large"], key=carsize_key)
+                cardistance = st.number_input("What distance did you travel by car", key=cardistance_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_car_transport/calculation?fuel={carfueltype}&size={carsize}&values.distance={cardistance}"
                 headers = {
                     "Accept": "application/json",
@@ -260,7 +280,8 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Transport by Taxi":
-                taxdist = st.number_input("What distance was traveled by taxi")
+                taxdist_key = f"{sector}_{use_case}_{year}_taxdist"
+                taxdist = st.number_input("What distance was traveled by taxi", key=taxdist_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Generic_taxi_transport/calculation?values.distance={taxdist}"
                 headers = {
                     "Accept": "application/json",
@@ -281,7 +302,8 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Landfill":
-                metrec = st.number_input("Volume of Methane Recovered (m3)")
+                metrec_key = f"{sector}_{use_case}_{year}_metrec"
+                metrec = st.number_input("Volume of Methane Recovered (m3)", key=metrec_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Landfill_emissions_based_on_methane_recovery/calculation?values.collected{metrec}"
                 headers = {
                     "Accept": "application/json",
@@ -302,9 +324,12 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Biological Waste Treatment":
-                btype = st.selectbox(f"What kind of composting are you using", ["Anaerobic Digestion", "Composting"])
-                qtmethane = st.number_input("What quantity of methane was recovered (in Gg):")
-                qttreatment = st.number_input("How much waste was treated (in Gg):")
+                btype_key = f"{sector}_{use_case}_{year}_btype"
+                qtmethane_key = f"{sector}_{use_case}_{year}_qtmethane"
+                qttreatment_key = f"{sector}_{use_case}_{year}_qttreatment"
+                btype = st.selectbox("What kind of composting are you using", ["Anaerobic Digestion", "Composting"], key=btype_key)
+                qtmethane = st.number_input("What quantity of methane was recovered (in Gg):", key=qtmethane_key)
+                qttreatment = st.number_input("How much waste was treated (in Gg):", key=qttreatment_key)
                 url = f"https://api.carbonkit.net/3.6/categories/biological_waste_treatment/calculation?type={btype}&values.recoveredMethane={qtmethane}&values.mass={qttreatment}"
                 headers = {
                     "Accept": "application/json",
@@ -325,8 +350,10 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Industrial Waste Combustion":
-                ind = st.selectbox(f"What industry are you in?", ["food/beverages/tobacco", "textile", "wood/wood products", "pulp and paper", "rubber", "petroleum products/solvents/plastics", "construction and demolition", "other"])
-                qtburned = st.number_input("What quantity was burned (in tonnes)")
+                ind_key = f"{sector}_{use_case}_{year}_ind"
+                qtburned_key = f"{sector}_{use_case}_{year}_qtburned"
+                ind = st.selectbox("What industry are you in?", ["food/beverages/tobacco", "textile", "wood/wood products", "pulp and paper", "rubber", "petroleum products/solvents/plastics", "construction and demolition", "other"], key=ind_key)
+                qtburned = st.number_input("What quantity was burned (in tonnes)", key=qtburned_key)
                 url = f"https://api.carbonkit.net/3.6/categories/Industrial_waste_combustion/calculation?industry={ind}&values.mass={qtburned}"
                 headers = {
                     "Accept": "application/json",
@@ -347,9 +374,12 @@ class Footprint:
                 else:
                     return 0
             elif use_case == "Livestock":
-                    ltype = st.selectbox(f"What type of livestock do you own", ["Dairy cattle", "Other Cattle", "Buffalo", "sheep", "Goats", "Camels", "Horses", "Mules/Asses", "Deer", "Alpacas", "Swine"])
-                    region = st.selectbox(f"What region is it from (Specify region for cattle and developed country for others)", ["North America", "Eastern Europe", "Western Europe", "Oceania", "Latin America", "Asia", "Africa and Middle East", "Indian Subcontinent", "Developed Countries", "Developing Countries"])
-                    lsize = st.number_input(f"How many do you own: ")
+                ltype_key = f"{sector}_{use_case}_{year}_ltype"
+                region_key = f"{sector}_{use_case}_{year}_region"
+                lsize_key = f"{sector}_{use_case}_{year}_lsize"
+                ltype = st.selectbox("What type of livestock do you own", ["Dairy cattle", "Other Cattle", "Buffalo", "sheep", "Goats", "Camels", "Horses", "Mules/Asses", "Deer", "Alpacas", "Swine"], key=ltype_key)
+                region = st.selectbox("What region is it from (Specify region for cattle and developed country for others)", ["North America", "Eastern Europe", "Western Europe", "Oceania", "Latin America", "Asia", "Africa and Middle East", "Indian Subcontinent", "Developed Countries", "Developing Countries"], key=region_key)
+                lsize = st.number_input("How many do you own:", key=lsize_key)
                     url = f"https://api.carbonkit.net/3.6/categories/Enteric_fermentation/livestockType={ltype}&region={region}&values.livestockNumber={lsize}"
                     headers = {
                         "Accept": "application/json",
@@ -481,40 +511,29 @@ def get_headers_placeholder():
 def main_menu(footprint_manager):
     st.title("Carbon Footprint Tracker")
     options = ["Add/Update Values", "Display Emissions", "Plot Total Emissions"]
-
-    # Check if the selected sector is set
-    if not st.session_state.get("selected_sector"):
-        initialize_sectors(footprint_manager)
-
     choice = st.sidebar.selectbox("Select Option", options)
 
     if choice == "Add/Update Values":
         year = st.selectbox("Choose Year", list(range(2010, 2050)))
         sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
-        st.session_state.selected_sector = sector
 
-        # Check if the selected sector is the desired one before displaying items
-        if st.session_state.selected_sector == sector:
-            for use_case in footprint_manager.sectors.get(sector, {}):
-                footprint_manager.input_value(sector, use_case, year)
+        for use_case in footprint_manager.sectors.get(sector, {}):
+            footprint_manager.input_value(sector, use_case, year)
 
     elif choice == "Display Emissions":
         selected_year = st.selectbox("Choose Year", list(range(2010, 2050)))
         total_emissions = footprint_manager.total_emissions_by_year(selected_year)
         st.subheader(f"Total Emissions for {selected_year}: {total_emissions} tCO2eq")
 
-        # Check if the selected sector is the desired one before displaying values
         sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
         if st.session_state.selected_sector == sector:
             footprint_manager.display_values(sector, selected_year)
 
     elif choice == "Plot Total Emissions":
-        # Check if the selected sector is the desired one before plotting
         sector = st.selectbox("Choose Sector", list(footprint_manager.sectors.keys()))
         if st.session_state.selected_sector == sector:
             plot_total_emissions(footprint_manager)
 
 if __name__ == "__main__":
     footprint_manager = Footprint()
-    initialize_sectors(footprint_manager)
     main_menu(footprint_manager)
